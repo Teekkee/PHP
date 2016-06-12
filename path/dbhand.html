@@ -1,0 +1,55 @@
+<html>
+	<head>
+	<link rel="stylesheet" type="text/css" href="cststyle.css"></link>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		$('#tgname').click( function () {
+			$("input[type='search']").toggle("slow");
+		})
+
+		$('#formable').submit(function() {
+			event.preventDefault();
+		})
+
+		$("input[type='submit']").click(function() {
+
+			$('#wtfbro').empty();
+			var formData = {
+				Action : $(this).val(),
+				Name: $("input[name='xxx']").val(),
+				Evolution: $("input[name='zzz']").val(),
+				Elements: $("input[name='ccc']").val()
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: 'database.php',
+				data: formData
+			})
+			
+			.done(function(respond) {
+				$('#wtfbro').html("<hr></hr><table id ='tb'><tr><th>Name</th><th>Evolution</th><th>Elements</th></tr></table>");
+				$.each(respond, function(i, v) {
+					$('#tb').append("<tr><td>" + v["Name"] + "</td><td>" + v["Evolution"] + "</td><td>" + v["Elements"] + "</td></tr>");
+				})
+			})
+		})
+	})
+	</script>
+	</head>
+	<body>
+		<form id='formable'>
+				<hr>
+			<div id="tgname" class="arrow"><span class="hp">Show/Hide</span></div><br>
+				<input type="search" name="xxx" id="xxx" class="reset" placeholder="Name of Pokemon">
+				<input type="search" name="zzz" id="zzz" class="reset" placeholder="Evolution of Pokemon">
+				<input type="search" name="ccc" id="ccc" class="reset" placeholder="Elements Pokemon are using">
+				<hr>
+			<input type="submit" id="show" value="Send" />
+			<input type="submit" value="Edit" disabled />
+			<input type="submit" value="Delete" />
+		</form>
+		<div id='wtfbro'></div>
+	</body>
+</html>
