@@ -1,5 +1,5 @@
 <?php
-	require('classes/connection.class.php');
+	require('conn.php');
 
 	$Name = $_POST["Name"];
 	$Evolution = $_POST["Evolution"];
@@ -33,9 +33,6 @@
 	}
 
 	function cstdel ( $Name, $Evolution, $Elements, $conn ) {
-                Connection::mysql_connect();
-                if (Connection::$conn !== null) {
-
 		$del = $conn -> prepare("DELETE FROM Pokemons WHERE Name='".$Name."'");
 		if( $del -> execute() == true) {
 			return true;
@@ -43,14 +40,8 @@
 			echo "Error";
 		}
 	}
-                Connection::disconnect();
-
-	}
 
 	function showAll ( $conn ) {
-                Connection::mysql_connect();
-                if (Connection::$conn !== null) {
-
 		$asel = $conn -> prepare("SELECT * FROM Pokemons");
 			if($asel -> execute() == true) {
 				$results = $asel -> fetchAll(PDO::FETCH_ASSOC);
@@ -59,7 +50,5 @@
 			}else{
 				echo "Error";
 			}
-		}
-                Connection::disconnect();
 	}
 ?>
